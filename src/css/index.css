@@ -1,0 +1,68 @@
+@import "tailwindcss";
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/preflight.css" layer(base);
+@import "tailwindcss/utilities.css" layer(utilities);
+
+@layer base {
+  img {
+    @apply w-full h-full block
+  }
+  button {
+    @apply cursor-pointer active:scale-95 transition-all
+  }
+}
+
+@layer theme {
+  body {
+    font-family: 'Alatsi', sans-serif;
+    font-weight: lighter;
+  }
+}
+
+@layer components {
+  .exerciseCard-Select {
+    @apply w-[90%] h-auto rounded-md border flex justify-between shadow-lg p-4 mx-auto cursor-pointer hover:bg-slate-400/60 transition-transform duration-200;
+  }
+  .exerciseCard-Figure {
+    @apply w-16 h-16 
+  }
+  .rotateClass {
+    @apply rotate-180 transition duration-700 ease-in-out;
+  }
+  .animateRedColor {
+    @apply animate-pulse duration-500 bg-red-500 text-white shadow-inner
+  }
+  .SideNavMain {
+    @apply sticky inset-0 z-20 w-32 h-72 p-2 border-r border-b backdrop-filter backdrop-blur-sm rounded-md cursor-pointer duration-1000 drop-shadow-2xl shadow-lg md:sticky lg:h-[340px] transition-transform ;
+  }
+  .SideLiConfig {
+    @apply grid grid-cols-[max-content,_0fr] group-hover:grid-cols-[max-content,_2fr] rounded-md active:scale-90 transition duration-200 overflow-hidden
+  }
+  .SideIconsConfig {
+    @apply relative flex cursor-pointer flex-grow-0 
+  }
+  .SideFigureConfig {
+    @apply block w-8 h-8 bg-transparent rounded-lg cursor-pointer
+  }
+  .SideArtConfig {
+    @apply relative flex items-center gap-x-2 cursor-pointer flex-grow-0  col-span-1
+  }
+  .SideTextConfig {
+    @apply text-start text-sm font-extralight lg:text-base whitespace-nowrap  
+  }
+  .LoginSecForm {
+    @apply relative w-full h-auto p-3 flex flex-col justify-center items-center gap-y-6 overflow-hidden shadow-lg
+  }
+  .LoginForm {
+    @apply flex mx-3 flex-col w-60 justify-center gap-6
+  }
+  .LoginInput {
+    @apply w-60 h-10 border rounded-lg text-base shadow-md bg-slate-50 p-1 text-black
+  }
+  .labelForm {
+    @apply flex flex-col items-center text-start
+  }
+  .profileSetters {
+    @apply font-bold text-slate-800/70 hover:text-slate-900 transition-all 
+  }
+}
