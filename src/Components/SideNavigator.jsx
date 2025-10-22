@@ -1,13 +1,12 @@
-import { useState } from 'react'
 import { Link } from 'react-router'
 import homeIcon from '../assets/images/house-light.svg'
 import exercisesIcon from '../assets/images/exercises-icon.svg'
 import logInIcon from '../assets/images/login-Sun.svg'
 import avatarIcon from '../assets/images/avatar.png'
+import { useUser } from '../hooks/useUser';
 
 export function SideNavigator({ displayNav }) {
-  const [user, setUser] = useState(false);
-  const userName = "Alejandro"
+  const { isAuthenticated, user } = useUser();
 
   return (
     <nav className={`${displayNav ? 'SideNavMain' : 'hidden'}`}>
@@ -37,13 +36,13 @@ export function SideNavigator({ displayNav }) {
              </Link>
           </li>
           <li className='SideLiConfig'>
-            <Link to={user ? '/perfil' : '/ingresar'}>
+            <Link to={isAuthenticated ? '/perfil' : '/ingresar'}>
               <div className='SideArtConfig'>
                 <figure className='SideFigureConfig'>
                   <img className={`${user ? 'rounded-full': 'rounded-none'}`} src={user ? avatarIcon : logInIcon} alt="Inicio" />
                 </figure>
                 <p className='SideTextConfig'>
-                  {user ? userName : "Ingresar"}
+                  {user ? 'Perfil' : "Ingresar"}
                 </p>
               </div>
              </Link>
