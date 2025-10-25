@@ -1,4 +1,4 @@
-import { initialState, reducerApp } from "./ReducerWorkout";
+import { initialState, reducerApp } from "../Reducers/ReducerWorkout";
 import { createContext, useReducer } from "react";
 
 export const ContextWorkout = createContext();

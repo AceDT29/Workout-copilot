@@ -2,7 +2,6 @@ import ghostIcon from '../assets/images/ghostLight.png';
 import closeIcon from '../assets/images/close.svg'
 
 export function Advisor({displayExcep, exception, closeExcep}) {
-
     return (
         <article className="fixed inset-0 bg-gradient-to-b from-slate-50/40 to-slate-800/40 flex items-center justify-center z-30 font-Lexend">
             <dialog open={displayExcep} className="bg-white w-[40vw] mx-auto p-4 h-auto min-w-62 min-h-32 rounded shadow-lg z-50 animFadeDown animate-duration-700">

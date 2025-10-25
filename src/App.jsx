@@ -5,6 +5,7 @@ import { LogIn } from './Components/LogIn'
 import { SignUp } from './Components/SignUp'
 import { Profile } from './Components/Profile'
 import { CheckIn } from './Components/RegisterCheckIn'
+import { CreateRoutine } from './Components/createRoutine'
 import { useState } from 'react'
 import rightArrow from './assets/images/arrowR.svg'
 import leftArrow from './assets/images/arrowL.svg'
@@ -12,7 +13,7 @@ import './css/index.css'
 
 export function AppRouter() {
   const [gotNav, setGotNav] = useState(false);
-
+  
   return (
     <main>
       <header className='sticky w-full z-30 h-auto border-b shadow-lg flex items-center justify-center p-4 backdrop-blur-2xl bg-white/30 mb-16'>
@@ -25,7 +26,7 @@ export function AppRouter() {
               <img src={gotNav ? leftArrow : rightArrow} className={`${gotNav ? 'rotateClass rotate-360 duration-500' : 'active:rotate-90 transition duration-500'}`} alt="" />
           </button>
         </div>
-        <article onClick={() => setGotNav(false)} className='relative w-[80%] h-auto h-min-[100vh] rounded-md border shadow-lg p-4 mx-auto md:w-[70%]'>
+        <article onClick={() => setGotNav(false)} className='relative w-[80%] h-auto h-min-[100vh] rounded-md shadow-md p-4 mx-auto'>
           <Routes>
             <Route path='/' element={<WorkoutsContainer />} />
             <Route path='/ingresar' element={<LogIn />} />

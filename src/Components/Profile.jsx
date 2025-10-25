@@ -32,7 +32,7 @@ export function Profile() {
     <section className="w-full max-w-4xl mx-auto p-4">
       <article className="flex flex-col md:flex-row gap-6">
         <div className="w-full md:w-1/3 flex flex-col items-center gap-4">
-          <div className="relative w-36 h-36 rounded-full overflow-hidden shadow-lg border-2">
+          <div className="relative w-36 h-36 rounded-full overflow-hidden shadow-lg border">
             <img
               src={user && user?.photoURL ? user.photoURL : avatarIcon}
               alt='Foto de perfil'
@@ -55,7 +55,7 @@ export function Profile() {
           </div>
         </div>
         <div className="w-full md:w-2/3">
-          <div className={`w-full p-4 rounded-md shadow mb-4 bg-white `}>
+          <section className='w-full p-4 rounded-md shadow mb-4 border bg-white'>
             <h3 className="text-lg font-semibold mb-2">Informacion de cuenta</h3>
             <div className="grid grid-cols-1 gap-2">
               <div className="flex items-center gap-3">
@@ -79,9 +79,9 @@ export function Profile() {
                 </div>
               </div>
             </div>
-          </div>
+          </section>
 
-          <div className={`w-full p-4 rounded-md shadow bg-white`}>
+          <section className={`w-full p-4 rounded-md shadow border bg-white`}>
             <div className="flex items-center justify-between mb-3">
               <h3 className="text-lg font-semibold">Tus rutinas</h3>
               <button className="text-sm text-blue-600 hover:underline">Ver todo</button>
@@ -90,7 +90,7 @@ export function Profile() {
               <p className="text-sm mb-3">Aun no has creado rutinas</p>
               <button className="px-4 py-2 rounded bg-blue-600 text-white">Crea tu primera rutina</button>
             </div>
-          </div>
+          </section>
         </div>
       </article>
     </section>
