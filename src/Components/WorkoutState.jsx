@@ -4,18 +4,23 @@ import pauseBg from "../assets/images/pause-bg.png";
 import playBg from "../assets/images/play-bg.png";
 import { CountdownCircleTimer } from 'react-countdown-circle-timer';
 
-export function WorkoutState({ showNext, name, icon, duration, series }) {
+export function WorkoutState({ showNext, name, icon, duration, series, routine, routineIndex = 0, onAdvanceRoutine, onRoutineComplete }) {
   const [isActive, setIsActive] = useState(false);
-  const [newSeries, setNewSeries] = useState(series);
-  const [newDuration, setNewDuration] = useState(duration);
+  // Determine current exercise: either from routine (sequence) or single selection
+  const currentExercise = (Array.isArray(routine) && routine.length > 0)
+    ? (routine[routineIndex] ?? {})
+    : { name, icon, duration, series };
 
-  const hasSelection = Boolean(name && name.length > 0);
+  const [newSeries, setNewSeries] = useState(currentExercise.series ?? 0);
+  const [newDuration, setNewDuration] = useState(currentExercise.duration ?? 0);
+
+  const hasSelection = Boolean(currentExercise && currentExercise.name && currentExercise.name.length > 0);
 
   useEffect(() => {
-    setNewDuration(duration);
-    setNewSeries(series);
+    setNewDuration(currentExercise.duration ?? 0);
+    setNewSeries(currentExercise.series ?? 0);
     setIsActive(false);
-  }, [duration, series, name]);
+  }, [currentExercise.name, currentExercise.duration, currentExercise.series, routine, routineIndex]);
 
   return (
     <div className="w-full h-full mx-auto z-10 p-4 mt-8">
@@ -29,33 +34,43 @@ export function WorkoutState({ showNext, name, icon, duration, series }) {
         </div>
       ) : (
         <article className="flex flex-col items-center justify-center gap-8">
-          <div className='flex flex-col items-center justify-center gap-4'>
+            <div className='flex flex-col items-center justify-center gap-4'>
             <h2 className="text-2xl font-bold mb-4">Ejercicio Actual</h2>
-            <h3 className='text-center text-lg font-semibold'>{name}</h3>
+            <h3 className='text-center text-lg font-semibold'>{currentExercise.name}</h3>
           </div>
           <div className="relative w-auto h-auto rounded-full p-2  flex items-center justify-center progress-Bar">
             <CountdownCircleTimer
                 isPlaying={isActive}
                 key={newDuration} // Reinicia el timer al cambiar la duración
-                duration={newDuration} // Convierte minutos a segundos
+                duration={newDuration} // segundos
                 onComplete={() => {
-                  if (newSeries !== 0) {
-                    setNewSeries(newSeries - 1);
+                  // Evitar off-by-one: repetir solo si quedan más de 1 series
+                  if (newSeries > 1) {
+                    setNewSeries(prev => prev - 1);
                     setIsActive(true);
-                    return { shouldRepeat: true, delay: 3.5,  };
+                    return { shouldRepeat: true, delay: 3.5 };
                   } else {
+                    // Última serie completada -> detener y avanzar si corresponde
+                    setNewSeries(0);
                     setIsActive(false);
-                    // Aqui podemos llamar a una función para notificar que el entrenamiento ha terminado
+                    if (Array.isArray(routine) && routine.length > 0) {
+                      if ((routineIndex ?? 0) < (routine.length - 1)) {
+                        onAdvanceRoutine && onAdvanceRoutine();
+                        return { shouldRepeat: false, reset: false };
+                      } else {
+                        onRoutineComplete && onRoutineComplete();
+                        return { shouldRepeat: false, reset: false };
+                      }
+                    }
                     return { shouldRepeat: false, reset: false };
                   }
-                }} // Detener el timer al completar
+                }}
                 size={230}
                 strokeWidth={12}
                 strokeLinecap="round"
                 trailStrokeWidth={12}
                 rotation="clockwise"
-                trailColor="#e6e6e6" // color de fondo (más claro que el stroke)
-                // Usar formato MultipleColors: array de colores y array de tiempos (segundos)
+                trailColor="#e6e6e6"
                 colors={['#004777', '#F7B801', '#A30000']}
                 colorsTime={[newDuration, Math.ceil(newDuration * 0.66), 0]}
                 isSmoothColorTransition={true}
@@ -63,7 +78,7 @@ export function WorkoutState({ showNext, name, icon, duration, series }) {
                   {({ remainingTime }) => (
                     <figure className='w-[90%] h-[90%] mx-auto rounded-full bg-white p-4 flex flex-col items-center justify-center gap-y-4'>
                       <p className='text-sm'>Restante: {remainingTime}'s</p>
-                      <img className='w-[60%] h-[60%]' src={icon} alt={name} />
+                      <img className='w-[60%] h-[60%]' src={currentExercise.icon} alt={currentExercise.name} />
                     </figure>
                   )}
             </CountdownCircleTimer>
@@ -79,12 +94,25 @@ export function WorkoutState({ showNext, name, icon, duration, series }) {
             </figure>
           </div>
           <div className="flex w-full h-auto justify-around items-center">
-            <p>Duración: {duration}'s</p>
+            <p>Duración: {currentExercise.duration}'s</p>
             <div>
               {newSeries == 0 && !isActive ? (
-                <button className='animateRedColor cursor-pointer z-10 active:scale-95 transition-all w-auto h-auto p-2 border-slate-600/70 border-2 rounded-md bg-red-800/80 text-white ' onClick={showNext}>
-                  Siguiente
-                </button>
+                // Si estamos en rutina y hay siguiente ejercicio, llamar al avance de rutina
+                Array.isArray(routine) && routine.length > 0 ? (
+                  (routineIndex ?? 0) < (routine.length - 1) ? (
+                    <button className='animateRedColor cursor-pointer z-10 active:scale-95 transition-all w-auto h-auto p-2 border-slate-600/70 border-2 rounded-md bg-amber-700/80 text-white ' onClick={() => onAdvanceRoutine && onAdvanceRoutine()}>
+                      Siguiente ejercicio
+                    </button>
+                  ) : (
+                    <button className='animateRedColor cursor-pointer z-10 active:scale-95 transition-all w-auto h-auto p-2 border-slate-600/70 border-2 rounded-md bg-emerald-700/80 text-white ' onClick={() => onRoutineComplete ? onRoutineComplete() : showNext()}>
+                      Rutina finalizada
+                    </button>
+                  )
+                ) : (
+                  <button className='animateRedColor cursor-pointer z-10 active:scale-95 transition-all w-auto h-auto p-2 border-slate-600/70 border-2 rounded-md bg-red-800/80 text-white ' onClick={showNext}>
+                    Siguiente
+                  </button>
+                )
               ) : (
                 <p>Series restantes: {newSeries}</p>
               )}

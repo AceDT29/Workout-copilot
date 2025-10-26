@@ -2,14 +2,19 @@ import emailIcon from '../assets/images/email-light.svg';
 import nameIcon from '../assets/images/name.svg';
 import avatarIcon from '../assets/images/avatar.png';
 import changePicIcon from '../assets/images/set-profilePic.png'
+import removeIcon from '../assets/images/garbage.svg'
 import { useUser } from '../hooks/useUser';
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router';
 import { supabase } from '../Lib/supabaseConfig';
+import { useWorkout } from '../hooks/useWorkoutContext'
+import { CreateRoutine } from './createRoutine'
 
 export function Profile() {
   const { user, clearUser, loading, isAuthenticated } = useUser();
   const Navigate = useNavigate()
+  const { state: routines, dispatch } = useWorkout();
+  const [showCreate, setShowCreate] = useState(false);
 
   const userOut = async () => {
     try {
@@ -84,13 +89,41 @@ export function Profile() {
           <section className={`w-full p-4 rounded-md shadow border bg-white`}>
             <div className="flex items-center justify-between mb-3">
               <h3 className="text-lg font-semibold">Tus rutinas</h3>
-              <button className="text-sm text-blue-600 hover:underline">Ver todo</button>
+              <button onClick={() => setShowCreate(true)} className="text-sm text-blue-600 hover:underline">Crear / Editar</button>
             </div>
-            <div className="border border-dashed border-slate-200 rounded p-6 text-center">
-              <p className="text-sm mb-3">Aun no has creado rutinas</p>
-              <button className="px-4 py-2 rounded bg-blue-600 text-white">Crea tu primera rutina</button>
+            <div className="border border-dashed border-slate-200 rounded p-6">
+              {routines && routines.length > 0 ? (
+                <ul className='flex flex-col gap-y-3'>
+                  {routines.map(item => (
+                    <li key={item.id} className='flex items-center justify-between p-2 rounded-md border bg-slate-50'>
+                      <div className='flex items-center gap-3'>
+                        <figure className='w-12 h-12'>
+                          <img src={item.icon} alt={item.name} />
+                        </figure>
+                        <div>
+                          <h4 className='text-sm font-medium'>{item.name}</h4>
+                          <p className='text-xs text-slate-500'>Duración: {item.duration}s · Series: {item.series}</p>
+                        </div>
+                      </div>
+                      <div className='flex items-center gap-2'>
+                        <button onClick={() => dispatch({ type: 'REMOVE_WORKOUT', payload: item.id })} className='w-12 h-12 p-2 text-sm text-red-600'>
+                            <img src={removeIcon} alt="" />
+                        </button>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <div className="text-center">
+                  <p className="text-sm mb-3">Aun no has creado rutinas</p>
+                  <button onClick={() => setShowCreate(true)} className="px-4 py-2 rounded bg-blue-600 text-white">Crea tu primera rutina</button>
+                </div>
+              )}
             </div>
           </section>
+          {showCreate && (
+            <CreateRoutine closeAd={() => setShowCreate(false)} displayAd={showCreate} />
+          )}
         </div>
       </article>
     </section>

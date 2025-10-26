@@ -7,13 +7,13 @@ import favIcon from '../assets/images/favHeart.svg'
 import closeIcon from '../assets/images/close.svg'
 
 
-export function CreateRoutine({ closeAd, displayAd }){
+export function CreateRoutine({ closeAd, displayAd }) {
     const { state, dispatch } = useWorkout();
     const { isAuthenticated } = useUser();
 
     const handleAddWorkout = (workout) => {
         const workoutExist = state.some(item => item.id === workout.id);
-        if(!workoutExist){
+        if (!workoutExist) {
             dispatch({
                 type: 'ADD_WORKOUT',
                 payload: {
@@ -27,7 +27,6 @@ export function CreateRoutine({ closeAd, displayAd }){
         }
     }
 
-    console.log(state)
     return (
         <>
             {!isAuthenticated ?
@@ -63,7 +62,7 @@ export function CreateRoutine({ closeAd, displayAd }){
                     </dialog>
                 </div>
             }
-            
+
         </>
     )
 }   
