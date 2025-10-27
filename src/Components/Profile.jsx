@@ -91,11 +91,11 @@ export function Profile() {
               <h3 className="text-lg font-semibold">Tus rutinas</h3>
               <button onClick={() => setShowCreate(true)} className="text-sm text-blue-600 hover:underline">Crear / Editar</button>
             </div>
-            <div className="border border-dashed border-slate-200 rounded p-6">
+            <div className="border border-dashed border-slate-200 rounded p-2">
               {routines && routines.length > 0 ? (
                 <ul className='flex flex-col gap-y-3'>
                   {routines.map(item => (
-                    <li key={item.id} className='flex items-center justify-between p-2 rounded-md border bg-slate-50'>
+                    <li key={item.id} className='flex items-center w-full justify-between p-2 rounded-md border bg-slate-50'>
                       <div className='flex items-center gap-3'>
                         <figure className='w-12 h-12'>
                           <img src={item.icon} alt={item.name} />
@@ -106,7 +106,7 @@ export function Profile() {
                         </div>
                       </div>
                       <div className='flex items-center gap-2'>
-                        <button onClick={() => dispatch({ type: 'REMOVE_WORKOUT', payload: item.id })} className='w-12 h-12 p-2 text-sm text-red-600'>
+                        <button onClick={() => dispatch({ type: 'REMOVE_WORKOUT', payload: item.id })} className='w-10 h-10 p-2 text-sm text-red-600'>
                             <img src={removeIcon} alt="" />
                         </button>
                       </div>

@@ -3,7 +3,10 @@ export const initialState = []
 export function reducerApp(state, action) {
     switch (action.type) {
         case 'ADD_WORKOUT':
-            return [...state, action.payload]
+            if (Array.isArray(action.payload)) {
+                return action.payload;
+            }
+            return [...state, action.payload];
         case 'SET_WORKOUTS':
             return Array.isArray(action.payload) ? action.payload : state
         case 'REMOVE_WORKOUT':

@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { supabase } from '../Lib/supabaseConfig';
 
 // RoutinesSync: child component mounted by AuthSync that owns
@@ -8,6 +8,7 @@ import { supabase } from '../Lib/supabaseConfig';
 // - routines: current routines array from reducer
 // - dispatch: reducer dispatch to update routines locally
 export function RoutinesSync({ user, routines, dispatch }) {
+  const [isInitialized, setIsInitialized] = useState(false);
   // Concrete table/column names based on your schema
   const TABLE = 'uRoutines';
   const USER_COL = 'user_id';
@@ -39,7 +40,8 @@ export function RoutinesSync({ user, routines, dispatch }) {
           series: r.series,
         }));
 
-        dispatch({ type: 'ADD_WORKOUT', payload: {exercises} });
+        dispatch({ type: 'ADD_WORKOUTS', payload: {exercises} });
+        setIsInitialized(true);
       } catch (err) {
         console.error('Failed to load persisted routines:', err);
       }
@@ -53,8 +55,9 @@ export function RoutinesSync({ user, routines, dispatch }) {
   // Persist routines whenever they change and there's an authenticated user
   // Now the table stores one row per exercise; we delete previous rows and insert the current ones
   useEffect(() => {
+    if (!isInitialized || !user) return;
+
     let mounted = true;
-    if (!user) return;
 
     const persist = async () => {
       if (!mounted) return;
@@ -86,7 +89,7 @@ export function RoutinesSync({ user, routines, dispatch }) {
 
     persist();
     return () => { mounted = false };
-  }, [routines, user]);
+  }, [routines, user, isInitialized]);
 
   // Subscribe to realtime changes on the detected table for this user
   useEffect(() => {
@@ -118,7 +121,7 @@ export function RoutinesSync({ user, routines, dispatch }) {
                 series: r.series,
               }));
 
-              dispatch({ type: 'ADD_WORKOUT', payload: exercises });
+              dispatch({ type: 'ADD_WORKOUTS', payload: {exercises} });
             } catch (err) {
               console.error('Realtime routine handler error:', err);
             }

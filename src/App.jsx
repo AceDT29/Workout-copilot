@@ -17,18 +17,18 @@ export function AppRouter() {
   const [showMyList, setShowMyList] = useState(false);
   
   return (
-    <main>
+    <main >
       <header className='sticky w-full z-30 h-auto border-b shadow-lg flex items-center justify-center p-4 backdrop-blur-2xl bg-white/30 mb-16'>
         <h1 className="text-4xl my-4">Workout Copilot</h1>
       </header>
-      <section className='relative flex flex-grow'>
+      <section  className='relative flex flex-grow '>
         <div className='fixed z-20 flex items-center group w-auto h-auto transition-all'> 
           <SideNavigator displayNav={gotNav} showRoutines={setShowMyList} showState={showMyList}/>
-          <button className='z-20 w-8 h-8 lg:w-12 lg:h-12 cursor-pointer' onClick={() => setGotNav(!gotNav)}>
+          <button className='z-20 w-10 h-10 p-2 lg:w-12 lg:h-12 cursor-pointer  bg-sky-200/90 rounded-full shadow-lg' onClick={() => setGotNav(!gotNav)}>
               <img src={gotNav ? leftArrow : rightArrow} className={`${gotNav ? 'rotateClass rotate-360 duration-500' : 'active:rotate-90 transition duration-500'}`} alt="" />
           </button>
         </div>
-        <article onClick={() => setGotNav(false)} className='relative w-[80%] h-auto h-min-[100vh] rounded-md shadow-md p-4 mx-auto'>
+        <article onClick={() => setGotNav(false)} onDoubleClick={() => setShowMyList(false)} className='relative w-[80%] border h-auto h-min-[100vh] rounded-md shadow-md p-4 mx-auto'>
           <Routes>
             <Route path='/' element={<WorkoutsContainer />} />
             <Route path='/ejercicios' element={<ExerciseGuide />} />
