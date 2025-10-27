@@ -6,10 +6,15 @@ import { CountdownCircleTimer } from 'react-countdown-circle-timer';
 
 export function WorkoutState({ showNext, name, icon, duration, series, routine, routineIndex = 0, onAdvanceRoutine, onRoutineComplete }) {
   const [isActive, setIsActive] = useState(false);
-  // Determine current exercise: either from routine (sequence) or single selection
-  const currentExercise = (Array.isArray(routine) && routine.length > 0)
+  const isRoutineMode = Array.isArray(routine) && routine.length > 0;
+  const currentExercise = isRoutineMode
     ? (routine[routineIndex] ?? {})
     : { name, icon, duration, series };
+
+  const nextExercise =
+    isRoutineMode && routineIndex < routine.length - 1
+      ? routine[routineIndex + 1]
+      : null;
 
   const [newSeries, setNewSeries] = useState(currentExercise.series ?? 0);
   const [newDuration, setNewDuration] = useState(currentExercise.duration ?? 0);
@@ -34,11 +39,19 @@ export function WorkoutState({ showNext, name, icon, duration, series, routine, 
         </div>
       ) : (
         <article className="flex flex-col items-center justify-center gap-8">
-            <div className='flex flex-col items-center justify-center gap-4'>
-            <h2 className="text-2xl font-bold mb-4">Ejercicio Actual</h2>
-            <h3 className='text-center text-lg font-semibold'>{currentExercise.name}</h3>
+          <div className='flex items-center justify-center gap-4 w-full'>
+            <div className='flex flex-col gap-y-2 text-center'>
+              <h2 className="font-bold text-lg">Ejercicio Actual</h2>
+              <h3 className='text-md'>{currentExercise.name}</h3>
+            </div>
+            {isRoutineMode && nextExercise && (
+              <div className='flex flex-col gap-y-2 text-center opacity-60'>
+                <h2 className="font-bold text-lg">Siguiente</h2>
+                <h3 className='text-md'>{nextExercise.name}</h3>
+              </div>
+            )}
           </div>
-          <div className="relative w-auto h-auto rounded-full p-2  flex items-center justify-center progress-Bar">
+          <div className="relative w-auto h-auto rounded-full p-2 flex items-center justify-center progress-Bar">
             <CountdownCircleTimer
                 isPlaying={isActive}
                 key={newDuration} // Reinicia el timer al cambiar la duración

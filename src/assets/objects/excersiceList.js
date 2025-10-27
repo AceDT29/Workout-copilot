@@ -118,7 +118,7 @@ export const exercises = [
         id: 12,
         name: "Triceps",
         icon: triceps,
-        description: "Ejercicio basico para brazos, muy recomendado antes de empezar otros ejercicios mas exigenstes",
+        description: "Ejercicio basico para brazos, muy recomendado antes de empezar otros ejercicios mas exigentes",
         categories: ["Calistenico", "brazos"],
         duration: 40,
         series: 2

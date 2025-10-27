@@ -15,7 +15,7 @@ export function MyRoutines({ display }) {
         {state && state.length > 0 ? (
           <ul className='flex flex-col gap-y-4'>
             {state.map(item => (
-              <li key={item.id} className='flex p-2 justify-between items-center rounded-md border w-[85%] h-20 bg-slate-50 shadow-lg'>
+              <li key={item.id} className='flex p-2 justify-between items-center rounded-md border w-full h-20 bg-slate-50 shadow-lg'>
                 <button className='flex items-center gap-3 w-full text-left'>
                   <figure className='w-16 h-16'>
                     <img src={item.icon} alt={item.name} />

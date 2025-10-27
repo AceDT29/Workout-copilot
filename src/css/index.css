@@ -66,6 +66,6 @@
     @apply font-bold text-slate-800/70 hover:text-slate-900 transition-all 
   }
   .SideWorkoutList {
-    @apply sticky overflow-auto right-0 border-l border-b rounded-md shadow-md z-20 w-[265px] h-auto md:w-80 lg:w-[412px]
+    @apply sticky overflow-auto right-0 border-l border-b rounded-md shadow-md z-20 w-56 h-auto md:w-80 lg:w-[350px]
   }
 }
