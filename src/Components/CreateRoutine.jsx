@@ -19,13 +19,20 @@ export function CreateRoutine({ closeAd, displayAd }) {
                 payload: {
                     id: workout.id,
                     name: workout.name,
+                    description: workout.description,
                     icon: workout.icon,
                     duration: workout.duration,
+                    categories: workout.categories,
                     series: workout.series
                 }
             })
         }
     }
+
+    const handleRemoveWorkout = (workoutId) => {
+        dispatch({ type: 'REMOVE_WORKOUT', payload: workoutId })
+    }
+    
 
     return (
         <>
@@ -48,12 +55,7 @@ export function CreateRoutine({ closeAd, displayAd }) {
                                         <img src={exercise.icon} alt="" />
                                     </figure>
                                     <h3 className='text-sm lg:text-base'>{exercise.name}</h3>
-                                    <button onClick={() => handleAddWorkout(exercise)} onDoubleClick={() => {
-                                        dispatch({
-                                            type: 'REMOVE_WORKOUT',
-                                            payload: exercise.id
-                                        })
-                                    }} className='w-10 h-10 p-2'>
+                                    <button onClick={() => handleAddWorkout(exercise)} onDoubleClick={() => handleRemoveWorkout(exercise.id)} className='w-10 h-10 p-2'>
                                         <img src={state.some(item => item.id === exercise.id) ? favIcon : unFavIcon} alt="Añadir a favoritos" />
                                     </button>
                                 </li>
