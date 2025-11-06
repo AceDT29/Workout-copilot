@@ -15,7 +15,7 @@ export function CreateRoutine({ closeAd, displayAd }) {
         const workoutExist = state.some(item => item.id === workout.id);
         if (!workoutExist) {
             dispatch({
-                type: 'ADD_WORKOUT',
+                type: 'UPDATE_WORKOUT_ID',
                 payload: {
                     id: workout.id,
                     name: workout.name,
@@ -56,7 +56,7 @@ export function CreateRoutine({ closeAd, displayAd }) {
                                     </figure>
                                     <h3 className='text-sm lg:text-base'>{exercise.name}</h3>
                                     <button onClick={() => handleAddWorkout(exercise)} onDoubleClick={() => handleRemoveWorkout(exercise.id)} className='w-10 h-10 p-2'>
-                                        <img src={state.some(item => item.id === exercise.id) ? favIcon : unFavIcon} alt="Añadir a favoritos" />
+                                        <img src={state.some(item => item.name === exercise.name) ? favIcon : unFavIcon} alt="Añadir a favoritos" />
                                     </button>
                                 </li>
                             ))}
