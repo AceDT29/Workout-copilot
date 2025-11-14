@@ -1,6 +1,7 @@
 import { WorkoutAd } from './WorkoutAd'
 import { exercises } from "../assets/objects/excersiceList"
 import { useUser } from '../hooks/useUser';
+import { useServices } from '../hooks/useServises';
 import { useWorkout } from '../hooks/useWorkoutContext';
 import unFavIcon from '../assets/images/heart.svg'
 import favIcon from '../assets/images/favHeart.svg'
@@ -9,23 +10,36 @@ import closeIcon from '../assets/images/close.svg'
 
 export function CreateRoutine({ closeAd, displayAd }) {
     const { state, dispatch } = useWorkout();
-    const { isAuthenticated } = useUser();
+    const { user, isAuthenticated } = useUser();
+    const { queryData, postData } = useServices();
 
     const handleAddWorkout = (workout) => {
         const workoutExist = state.some(item => item.id === workout.id);
         if (!workoutExist) {
             dispatch({
-                type: 'UPDATE_WORKOUT_ID',
+                type: 'ADD_WORKOUT',
                 payload: {
                     id: workout.id,
-                    name: workout.name,
-                    description: workout.description,
-                    icon: workout.icon,
-                    duration: workout.duration,
                     categories: workout.categories,
+                    name: workout.name,
+                    icon: workout.icon,
+                    description: workout.description,
+                    duration: workout.duration,
                     series: workout.series
                 }
             })
+            try {
+                queryData(user, workout.id).then((data) => {
+                    if (data && data.length === 0) {
+                        postData(user, workout, dispatch);
+                        console.log('Routine posted to DB:', workout.name);
+                    } else {
+                        console.log('Routine already exists in DB:', workout.name);
+                    }
+                });
+            } catch (error) {
+                console.error('Error adding workout:', error);
+            }
         }
     }
 
@@ -33,7 +47,6 @@ export function CreateRoutine({ closeAd, displayAd }) {
         dispatch({ type: 'REMOVE_WORKOUT', payload: workoutId })
     }
     
-
     return (
         <>
             {!isAuthenticated ?
