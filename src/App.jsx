@@ -7,7 +7,8 @@ import { Profile } from './Components/Profile'
 import { CheckIn } from './Components/RegisterCheckIn'
 import { MyRoutines } from './Components/MyRoutines'
 import { ExerciseGuide } from './Components/ExerciseGuide'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useUser } from './hooks/useUser'
 import rightArrow from './assets/images/arrowR.svg'
 import leftArrow from './assets/images/arrowL.svg'
 import './css/index.css'
@@ -15,6 +16,13 @@ import './css/index.css'
 export function AppRouter() {
   const [gotNav, setGotNav] = useState(false);
   const [showMyList, setShowMyList] = useState(false);
+  const { isAuthenticated } = useUser();
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      setShowMyList(false);
+    }
+  }, [isAuthenticated]);
   
   return (
     <main >
