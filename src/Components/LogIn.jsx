@@ -64,7 +64,7 @@ export function LogIn() {
             Contraseña
             <input ref={inputPass} className="LoginInput" type={showPass ? "text" : "password"} placeholder="******" autoComplete="off" id="passID" required />
             <span className="text-sm text-slate-500"></span>
-            <button onClick={() => (setShowPass(!showPass))} className="absolute top-8 left-[85%] cursor-pointer z-10 ">
+            <button onClick={() => (setShowPass(!showPass))} type='button' className="absolute top-8 left-[85%] cursor-pointer z-10 ">
               <img className="globalImgs w-6 h-6 transition-all" src={showPass ? eyeOn : eyeOff} alt="" />
             </button>
           </label>
