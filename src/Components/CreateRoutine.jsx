@@ -11,7 +11,7 @@ import closeIcon from '../assets/images/close.svg'
 export function CreateRoutine({ closeAd, displayAd }) {
     const { state, dispatch } = useWorkout();
     const { user, isAuthenticated } = useUser();
-    const { queryData, postData } = useServices();
+    const { queryData, postData, deleteData } = useServices();
 
     const handleAddWorkout = (workout) => {
         const workoutExist = state.some(item => item.id === workout.id);
@@ -44,7 +44,13 @@ export function CreateRoutine({ closeAd, displayAd }) {
     }
 
     const handleRemoveWorkout = (workoutId) => {
-        dispatch({ type: 'REMOVE_WORKOUT', payload: workoutId })
+        dispatch({ type: 'REMOVE_WORKOUT', payload: workoutId });
+        try {
+            deleteData(user, workoutId, dispatch);
+            console.log('Routine removed from DB:', workoutId);
+        } catch (error) {
+            console.error('Error removing workout:', error);
+        }
     }
     
     return (
