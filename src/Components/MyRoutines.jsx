@@ -4,8 +4,9 @@ import { useUser } from '../hooks/useUser';
 import { useEffect, useState } from 'react';
 import removeIcon from '../assets/images/garbage.svg'
 import loadIcon from '../assets/images/loading.png'
+import closeIcon from '../assets/images/close.svg'
 
-export function MyRoutines({ display }) {
+export function MyRoutines({ display, setDisplay }) {
   const { state, dispatch } = useWorkout();
   const { deleteData, getData } = useServices();
   const { user, session } = useUser();
@@ -35,7 +36,13 @@ export function MyRoutines({ display }) {
   return (
     <nav className={display ? 'SideWorkoutList' : 'hidden'} onClick={(e) => e.stopPropagation()}>
       <div className='backdrop-filter backdrop-blur-2xl p-2 shadow-md lg:p-4'>
-        <h2 className='text-lg font-semibold mb-4'>Mi Rutina</h2>
+        <div className='w-full flex justify-between items-center mb-4'>
+          <h2 className='text-lg font-semibold'>Mi Rutina</h2>
+          <button onClick={() => setDisplay(false)} className='w-8 h-8 p-2'>
+            <img src={closeIcon} alt="Cerrar" />
+          </button>
+        </div>
+        
         {loading ? (
           <div className="w-full text-center flex flex-col items-center justify-center rounded-md shadow border gap-2 py-4">
             <figure className="w-16 h-16 animate-spin">
@@ -49,7 +56,7 @@ export function MyRoutines({ display }) {
               <li key={item.id} className='flex p-2 justify-between items-center rounded-md border w-full h-20 bg-slate-50 shadow-lg'>
                 <button className='flex items-center gap-3 w-full text-left'>
                   <figure className='w-16 h-16'>
-                    <img src={item.icon} alt={item.name} />
+                    <img src={item.iconPath} alt={item.name} />
                   </figure>
                   <div>
                     <h3 className='text-sm lg:text-base'>{item.name}</h3>

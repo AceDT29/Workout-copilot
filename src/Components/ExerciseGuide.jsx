@@ -68,7 +68,7 @@ export function ExerciseGuide() {
         {filtered.map((ex, idx) => (
           <article key={ex.id} className='p-4 rounded-md border bg-white shadow-md flex flex-col md:flex-row gap-4 items-stretch'>
             <figure className='w-full md:w-28 h-28 flex-shrink-0 rounded-md overflow-hidden border flex items-center justify-center bg-white'>
-              <img src={ex.icon} alt={ex.name} className='w-full h-full object-contain p-2' />
+              <img src={ex.iconPath} alt={ex.name} className='w-full h-full object-contain p-2' />
             </figure>
             <div className='flex-1 min-w-0'>
               <div className='flex flex-col md:flex-row items-start md:items-center justify-between gap-4'>

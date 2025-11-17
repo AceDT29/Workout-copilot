@@ -77,7 +77,7 @@ export function WorkoutsContainer() {
                     showNext: () => setShowlist(true),
                 } : {
                     name: selected?.name ?? '',
-                    icon: selected?.icon ?? '',
+                    iconPath: selected?.iconPath ?? '',
                     duration: selected?.duration ?? 0,
                     series: selected?.series ?? 0,
                     showNext: () => setShowlist(true),
