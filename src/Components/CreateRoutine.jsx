@@ -1,5 +1,5 @@
 import { WorkoutAd } from './WorkoutAd'
-import { exercises } from "../assets/objects/excersiceList"
+import { useExercises } from '../hooks/useExercises';
 import { useUser } from '../hooks/useUser';
 import { useServices } from '../hooks/useServises';
 import { useWorkout } from '../hooks/useWorkoutContext';
@@ -7,11 +7,11 @@ import unFavIcon from '../assets/images/heart.svg'
 import favIcon from '../assets/images/favHeart.svg'
 import closeIcon from '../assets/images/close.svg'
 
-
 export function CreateRoutine({ closeAd, displayAd }) {
     const { state, dispatch } = useWorkout();
     const { user, isAuthenticated } = useUser();
     const { queryData, postData, deleteData } = useServices();
+    const { exercises } = useExercises();
 
     const handleAddWorkout = (workout) => {
         const workoutExist = state.some(item => item.id === workout.id);

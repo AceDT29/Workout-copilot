@@ -1,10 +1,11 @@
-import { exercises } from "../assets/objects/excersiceList"
+import { useExercises } from "../hooks/useExercises";
 
 // WorkoutsList ahora es un componente puramente presentacional.
 // Props:
 // - selected: el objeto exercise seleccionado (o null)
 // - onSelect: función llamada con el objeto seleccionado o null
 export function WorkoutsList({ selected, onSelect }) {
+    const { exercises } = useExercises();
     function handleSelected(e) {
         const id = e.target.value
         if (!id) {

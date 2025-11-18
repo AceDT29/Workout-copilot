@@ -1,14 +1,14 @@
-import { useEffect, useState } from 'react'
-import { WorkoutsList } from './WorkoutsList'
-import { WorkoutState } from './WorkoutState'
-import { CreateRoutine } from './createRoutine'
-import { WorkoutAd } from './WorkoutAd'
-import { useWorkout } from '../hooks/useWorkoutContext'
-import { useUser } from '../hooks/useUser'
-import menuIcon from '../assets/images/menu-burger.svg'
-import newRutineIcon from '../assets/images/create.svg'
-import closeIcon from '../assets/images/close.svg'
-import listIcon from '../assets/images/workout-list.svg'
+import { useEffect, useState } from 'react';
+import { WorkoutsList } from './WorkoutsList';
+import { WorkoutState } from './WorkoutState';
+import { CreateRoutine } from './CreateRoutine';
+import { WorkoutAd } from './WorkoutAd';
+import { useWorkout } from '../hooks/useWorkoutContext';
+import { useUser } from '../hooks/useUser';
+import menuIcon from '../assets/images/menu-burger.svg';
+import newRutineIcon from '../assets/images/create.svg';
+import closeIcon from '../assets/images/close.svg';
+import listIcon from '../assets/images/workout-list.svg';
 
 export function WorkoutsContainer() {
     const [selected, setSelected] = useState(null)
