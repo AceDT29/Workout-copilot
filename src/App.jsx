@@ -49,7 +49,7 @@ export function AppRouter() {
           </Routes>
         </article>
          <div className='fixed right-0 z-30 flex items-center group w-auto h-auto transition-all'>
-          <MyRoutines display={showMyList} />
+          <MyRoutines display={showMyList} setDisplay={() => setShowMyList(false)}/>
         </div>
       </section>
     </main>  

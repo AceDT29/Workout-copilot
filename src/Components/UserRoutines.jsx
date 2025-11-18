@@ -57,7 +57,7 @@ export function UserRoutines({ user, session }) {
                                 <li key={item.id} className='flex items-center w-full justify-between p-2 rounded-md border bg-slate-50'>
                                     <div className='flex items-center gap-3'>
                                         <figure className='w-12 h-12'>
-                                            <img src={item.icon} alt={item.name} />
+                                            <img src={item.iconPath} alt={item.name} />
                                         </figure>
                                         <div>
                                             <h4 className='text-sm font-medium'>{item.name}</h4>

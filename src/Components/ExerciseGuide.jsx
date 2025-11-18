@@ -1,18 +1,19 @@
 import { useMemo, useState } from 'react'
-import { exercises } from '../assets/objects/excersiceList'
-
+import { useExercises } from '../hooks/useExercises';
 
 export function ExerciseGuide() {
-  const [typeFilter, setTypeFilter] = useState('all') // 'all' | 'fuerza' | 'calistenico'
+  const { exercises, loading, error } = useExercises();
+  const [typeFilter, setTypeFilter] = useState('all')
   const [bodyFilter, setBodyFilter] = useState('all')
   const [q, setQ] = useState('')
 
   const normalized = useMemo(() => {
+    if (!exercises || exercises.length === 0) return [];
     return exercises.map(ex => ({
       ...ex,
-      categoriesNorm: ex.categories.map(c => String(c).toLowerCase())
+      categoriesNorm: (ex.categories || []).map(c => String(c).toLowerCase())
     }))
-  }, [])
+  }, [exercises])
 
   const bodyOptions = useMemo(() => {
     const set = new Set()
@@ -42,6 +43,26 @@ export function ExerciseGuide() {
 
   const filtered = normalized.filter(ex => matchType(ex) && matchBody(ex) && matchQuery(ex))
 
+  if (loading) {
+    return (
+      <section className='max-w-5xl mx-auto p-4'>
+        <div className='text-center py-12'>
+          <p className='text-slate-600'>Cargando ejercicios...</p>
+        </div>
+      </section>
+    )
+  }
+
+  if (error) {
+    return (
+      <section className='max-w-5xl mx-auto p-4'>
+        <div className='text-center py-12'>
+          <p className='text-red-600'>Error: {error}</p>
+        </div>
+      </section>
+    )
+  }
+
   return (
     <section className='max-w-5xl mx-auto p-4'>
       <header className='mb-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4'>
@@ -68,7 +89,7 @@ export function ExerciseGuide() {
         {filtered.map((ex, idx) => (
           <article key={ex.id} className='p-4 rounded-md border bg-white shadow-md flex flex-col md:flex-row gap-4 items-stretch'>
             <figure className='w-full md:w-28 h-28 flex-shrink-0 rounded-md overflow-hidden border flex items-center justify-center bg-white'>
-              <img src={ex.icon} alt={ex.name} className='w-full h-full object-contain p-2' />
+              <img src={ex.iconPath} alt={ex.name} className='w-full h-full object-contain p-2' onError={(e) => e.target.src = '/images/placeholder-exercise.svg'} />
             </figure>
             <div className='flex-1 min-w-0'>
               <div className='flex flex-col md:flex-row items-start md:items-center justify-between gap-4'>

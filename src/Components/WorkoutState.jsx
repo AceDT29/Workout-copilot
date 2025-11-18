@@ -4,12 +4,12 @@ import pauseBg from "../assets/images/pause-bg.png";
 import playBg from "../assets/images/play-bg.png";
 import { CountdownCircleTimer } from 'react-countdown-circle-timer';
 
-export function WorkoutState({ showNext, name, icon, duration, series, routine, routineIndex = 0, onAdvanceRoutine, onRoutineComplete }) {
+export function WorkoutState({ showNext, name, iconPath, duration, series, routine, routineIndex = 0, onAdvanceRoutine, onRoutineComplete }) {
   const [isActive, setIsActive] = useState(false);
   const isRoutineMode = Array.isArray(routine) && routine.length > 0;
   const currentExercise = isRoutineMode
     ? (routine[routineIndex] ?? {})
-    : { name, icon, duration, series };
+    : { name, iconPath, duration, series };
 
   const nextExercise =
     isRoutineMode && routineIndex < routine.length - 1
@@ -91,7 +91,7 @@ export function WorkoutState({ showNext, name, icon, duration, series, routine, 
                   {({ remainingTime }) => (
                     <figure className='w-[90%] h-[90%] mx-auto rounded-full bg-white p-4 flex flex-col items-center justify-center gap-y-4'>
                       <p className='text-sm'>Restante: {remainingTime}'s</p>
-                      <img className='w-[60%] h-[60%]' src={currentExercise.icon} alt={currentExercise.name} />
+                      <img className='w-[60%] h-[60%]' src={currentExercise.iconPath} alt={currentExercise.name} />
                     </figure>
                   )}
             </CountdownCircleTimer>

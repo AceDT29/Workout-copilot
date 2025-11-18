@@ -1,16 +1,29 @@
 import { supabase } from "../Lib/supabaseConfig";
 
 export const useServices = () => {
+
+    const fetchData = async () => {
+        const { data, error } = await supabase
+            .from('Exercises')
+            .select('*');
+        if (error) {
+            console.error('Error fetching data):', error);
+            return [];
+        } else {
+            return data;
+        }
+    };
+
+
     const getData = async (user, dispatch) => {
         if (user) {
             const { data, error } = await supabase
                 .from('uRoutines')
-                .select('excerciseId, categories, name, icon, description, duration, series')
+                .select('excerciseId, categories, name, iconPath, description, duration, series')
                 .eq('user_id', user.id);
             if (error) {
                 console.error('Error fetching routines:', error);
             } else {
-                console.log("Routines fetched from DB:", data);
                 dispatch({ type: 'SET_MANY_WORKOUTS', payload: data.map(item => ({ ...item, id: item.excerciseId })) });
             }
         } else {
@@ -43,7 +56,7 @@ export const useServices = () => {
                         excerciseId: workout.id,
                         user_id: user.id,
                         name: workout.name,
-                        icon: workout.icon,
+                        iconPath: workout.iconPath,
                         description: workout.description,
                         duration: workout.duration,
                         categories: workout.categories,
@@ -73,5 +86,5 @@ export const useServices = () => {
         }
     };
 
-    return { getData, queryData, postData, deleteData };
+    return { getData, queryData, postData, deleteData, fetchData };
 }
